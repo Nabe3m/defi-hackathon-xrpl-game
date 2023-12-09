@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "cron": [
+    {
+      "name": "weekly-distribution",
+      "path": "/api/distribute",
+      "schedule": "0 0 * * 0"
+    }
+  ]
+}
