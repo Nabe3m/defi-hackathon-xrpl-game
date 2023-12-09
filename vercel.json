@@ -1,9 +1,8 @@
 {
-  "version": 2,
-  "functions": {
-    "/api/distribution": {
-      "runtime": "nodejs14.x",
-      "cron": "50 23 * * 6"
+  "crons": [
+    {
+      "path": "/api/distribution",
+      "schedule": "50 23 * * 6"
     }
-  }
+  ]
 }
