@@ -25,6 +25,9 @@ export const metadata: Metadata = {
   openGraph: {
     images: "/og-image.png",
   },
+  robots: {
+    index: false, // noindex
+  },
 };
 
 export default function RootLayout({

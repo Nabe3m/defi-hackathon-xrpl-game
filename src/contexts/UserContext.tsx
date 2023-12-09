@@ -83,7 +83,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     };
 
     sdk?.on("response", handleResponse);
-  }, []);
+  }, [user.isConnected]);
 
   // コンポーネントがマウントされた時にXRP残高を更新
   // useEffect(() => {
