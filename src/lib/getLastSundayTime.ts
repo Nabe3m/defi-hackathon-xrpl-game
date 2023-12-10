@@ -11,7 +11,7 @@ export const getLastSundayTime = (): number => {
   );
 
   const currentDayUtc = new Date(nowUtc).getUTCDay(); // 現在の曜日（UTC）
-  const diffToLastSunday = currentDayUtc === 0 ? 7 : currentDayUtc; // 日曜日までの差分（日曜日が0なら前週の日曜日、それ以外はその曜日数分引く）
+  const diffToLastSunday = currentDayUtc === 0 ? 0 : currentDayUtc; // 日曜日が0なら当日、それ以外はその曜日数分引く
 
   const lastSundayUtc = new Date(nowUtc);
   lastSundayUtc.setUTCDate(lastSundayUtc.getUTCDate() - diffToLastSunday);

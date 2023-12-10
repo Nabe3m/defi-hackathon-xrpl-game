@@ -36,7 +36,7 @@ export const getRecentHistoryData = async (userAddress: string) => {
         const txUnixTimestamp = rippleTimeToUnixTime(tx.tx.date);
 
         // console.log(txUnixTimestamp);
-        // console.log(unixEpochTimeOfLastSunday);
+        console.log(unixEpochTimeOfLastSunday);
 
         return txUnixTimestamp >= unixEpochTimeOfLastSunday;
       }

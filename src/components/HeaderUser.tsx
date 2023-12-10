@@ -36,7 +36,7 @@ const HeaderUser = () => {
         <>
           {/* <Typography marginRight={2}>{user.xrpBalance} XRP</Typography> */}
           <AccountCircleIcon />
-          <Typography>{user.username}</Typography>
+          <Typography>{user.username || user.address}</Typography>
         </>
       )}
       {!user.isConnected && (
