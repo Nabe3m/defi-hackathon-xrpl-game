@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
+import { AppBar, Toolbar, Typography, Box } from "@mui/material";
 import HeaderUser from "@/components/HeaderUser";
 import { DotGothic16 } from "next/font/google";
 

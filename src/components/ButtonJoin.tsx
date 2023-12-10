@@ -5,7 +5,7 @@ import sdk from "@crossmarkio/sdk";
 import { Button } from "@mui/material";
 import { useUser } from "../contexts/UserContext";
 import { HistoryData } from "../types/historyData";
-import { fetchOwnerBalance } from "@/lib/getOwnerBalance";
+// import { fetchOwnerBalance } from "@/lib/getOwnerBalance";
 
 export default function ButtonJoin() {
   const { user, setUser, updateThisWeekHistory } = useUser();

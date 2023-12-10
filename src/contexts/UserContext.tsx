@@ -10,7 +10,6 @@ import React, {
 import { UserState } from "../types/user";
 import { HistoryData } from "../types/historyData";
 import sdk from "@crossmarkio/sdk";
-import { Client, Transaction, AccountTxTransaction } from "xrpl";
 
 const initialState: UserState = {
   address: "",
