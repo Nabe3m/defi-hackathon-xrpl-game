@@ -99,10 +99,10 @@ export async function GET() {
     );
 
     // Debug
-    return NextResponse.json({
-      message: "checkWinningTransactions",
-      transactions: winningTxs,
-    });
+    // return NextResponse.json({
+    //   message: "checkWinningTransactions",
+    //   transactions: winningTxs,
+    // });
 
     // Winner全員にCheckを送信
     const checkCreateResults = await performCheckCreateTransactions(
