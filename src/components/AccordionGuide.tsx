@@ -55,9 +55,9 @@ function AccordionGuide() {
               </li>
               <li className="mb-1">Voting closes at 23:50 UTC on Saturday.</li>
               <li className="mb-1">
-                90% of the XRP accumulated in the owner's account during the
-                week is distributed among the users who won (balance / number of
-                winners).
+                90% of the XRP accumulated in the owner&lsquo;s account during
+                the week is distributed among the users who won (balance /
+                number of winners).
               </li>
               <li className="mb-1">
                 Each draw randomly selects ten 6-digit numbers as the winning
@@ -65,12 +65,12 @@ function AccordionGuide() {
               </li>
               <li className="mb-1">
                 Transactions matching the voting number within the period are
-                filtered, and Check transactions are sent to the sender's
+                filtered, and Check transactions are sent to the sender&lsquo;s
                 address.
               </li>
               <li className="mb-1">
                 Winners are requested to click the CLAIM button in Claim Checks
-                to receive their prize (using XRPL's Check feature).
+                to receive their prize (using XRPL&lsquo;s Check feature).
               </li>
               <li className="mb-1">
                 The deadline for claiming checks is one year from the time of
