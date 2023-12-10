@@ -32,7 +32,7 @@ const OwnerBalance = () => {
     fetchBalance();
   }, []);
 
-  const ownerWalletLink = `https://xrpscan.com/account/${process.env.NEXT_PUBLIC_OWNER_WALLET_ADDRESS}`;
+  const ownerWalletLink = `https://test.bithomp.com/explorer/${process.env.NEXT_PUBLIC_OWNER_WALLET_ADDRESS}`;
 
   return (
     <Box
