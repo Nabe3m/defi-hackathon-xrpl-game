@@ -85,21 +85,24 @@ export async function GET() {
     //   transactions: transactions,
     // });
 
-    // 6桁のランダムな数値を生成（当選番号）
-    const randomNumber = Math.floor(Math.random() * 900000 + 100000);
+    // 10個の6桁のランダムな数値を生成（当選番号）
+    const randomNumbers = [];
+    for (let i = 0; i < 10; i++) {
+      randomNumbers.push(Math.floor(Math.random() * 900000 + 100000));
+    }
 
     // 当選者の存在チェック
-    const winningTxs = await checkWinningTransactions(
+    const winningTxs: object[] = await checkWinningTransactions(
       client,
       transactions,
-      randomNumber
+      randomNumbers
     );
 
     // Debug
-    // return NextResponse.json({
-    //   message: "checkWinningTransactions",
-    //   transactions: winningTxs,
-    // });
+    return NextResponse.json({
+      message: "checkWinningTransactions",
+      transactions: winningTxs,
+    });
 
     // Winner全員にCheckを送信
     const checkCreateResults = await performCheckCreateTransactions(
@@ -125,7 +128,10 @@ export async function GET() {
 
     await client.disconnect();
 
-    return NextResponse.json({ message: "Distribution completed" });
+    return NextResponse.json({
+      message: "Distribution completed",
+      winners: checkCreateResults,
+    });
   } catch (error) {
     console.error("Error in distribution:", error);
     return NextResponse.json({ error: "Internal Server Error" });
@@ -171,34 +177,53 @@ async function fetchTransactions(
   }
 }
 
-// checkWinningTransactions
+// 当選者の確定
 async function checkWinningTransactions(
   client: Client,
   transactions: any[],
-  randomNumber: number
-): Promise<any> {
-  // 番号が一致するトランザクションを検証
-  const winningTxs = transactions.filter((tx) => {
-    if (tx.tx && tx.tx.date !== undefined && tx.tx.Memos?.[0]?.Memo?.MemoData) {
-      // メモデータを16進数として解釈し、整数に変換
-      const memoData = tx.tx.Memos?.[0]?.Memo?.MemoData;
-      let resultNum: number | null = null;
+  randomNumbers: number[]
+): Promise<object[]> {
+  let allWinningTxs: object[] = [];
+  let seenTxHashes = new Set<string>(); // 既に当選と判定されたトランザクションのハッシュを記録
 
-      if (memoData) {
-        let numberStr = Buffer.from(memoData, "hex").toString("utf8");
-        if (numberStr.length === 6) {
-          resultNum = Number(numberStr);
+  // 各当選番号に対してチェック
+  randomNumbers.forEach((randomNumber) => {
+    const winningTxs: object[] = transactions.filter((tx) => {
+      if (
+        !seenTxHashes.has(tx.tx.hash) &&
+        tx.tx &&
+        tx.tx.date !== undefined &&
+        tx.tx.Memos?.[0]?.Memo?.MemoData
+      ) {
+        // メモデータを16進数として解釈し、整数に変換
+        const memoData = tx.tx.Memos?.[0]?.Memo?.MemoData;
+        let resultNum: number | null = null;
+
+        if (memoData) {
+          let numberStr = Buffer.from(memoData, "hex").toString("utf8");
+          if (numberStr.length === 6) {
+            resultNum = Number(numberStr);
+          }
         }
-      }
-      return randomNumber === resultNum;
 
-      // Debug
-      // return 336046 === resultNum;
-    }
-    return false;
+        // 当選と判定
+        if (randomNumber === resultNum) {
+          seenTxHashes.add(tx.tx.hash); // 当選と判定したトランザクションのハッシュを記録
+          return true;
+        }
+
+        // Debug
+        // if (336046 === resultNum) {
+        //   seenTxHashes.add(tx.tx.hash); // 当選と判定したトランザクションのハッシュを記録
+        //   return true;
+        // }
+      }
+      return false;
+    });
+    allWinningTxs.push(...winningTxs);
   });
 
-  return winningTxs;
+  return allWinningTxs;
 }
 
 // 当選者にCheckを送信する
@@ -213,6 +238,11 @@ async function performCheckCreateTransactions(
   // const winnerCount = transactionsData.length;
   // const winnerCount: number = transactionsData.length * 100;
   const winnerCount: number = transactionsData.length;
+
+  if (winnerCount <= 0) {
+    return [];
+  }
+
   const amountPerWinner = calculateDistributionAmount(
     ownerXrpBalance,
     winnerCount

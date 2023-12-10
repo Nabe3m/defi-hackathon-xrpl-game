@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useUser } from "../contexts/UserContext";
@@ -13,15 +13,18 @@ const HeaderUser = () => {
     if (!user.isConnected) {
       const id = sdk.signIn();
 
-      if (id) {
-        setUser({
-          address: sdk.session?.address || "",
-          username: sdk.session?.user?.username || "",
-          xrpBalance: 0,
-          historyData: [],
-          isConnected: true,
-        });
-      }
+      // if (id) {
+      //   if (sdk.api.connected) {
+      //     console.log(sdk.api);
+      //     setUser({
+      //       address: sdk.session?.address || "",
+      //       username: sdk.session?.user?.username || "",
+      //       xrpBalance: 0,
+      //       historyData: [],
+      //       isConnected: true,
+      //     });
+      //   }
+      // }
     } else {
       // sign out
     }

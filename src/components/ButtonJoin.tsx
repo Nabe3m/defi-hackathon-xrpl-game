@@ -5,6 +5,7 @@ import sdk from "@crossmarkio/sdk";
 import { Button } from "@mui/material";
 import { useUser } from "../contexts/UserContext";
 import { HistoryData } from "../types/historyData";
+import { fetchOwnerBalance } from "@/lib/getOwnerBalance";
 
 export default function ButtonJoin() {
   const { user, setUser, updateThisWeekHistory } = useUser();
@@ -41,7 +42,7 @@ export default function ButtonJoin() {
         date.getMonth() + 1
       }/${date.getDate()}/${date.getFullYear()}`;
 
-      // console.log(result);
+      console.log(result);
 
       const res: HistoryData = {
         date: formattedDate,
@@ -52,6 +53,8 @@ export default function ButtonJoin() {
       };
 
       updateThisWeekHistory([res]);
+
+      // updateOwnerBalance(fetchOwnerBalance());
     }
   };
 

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { DotGothic16 } from "next/font/google";
 import { Typography, Button } from "@mui/material";
 import ButtonJoin from "@/components/ButtonJoin";
@@ -6,6 +5,7 @@ import AccordionGuide from "@/components/AccordionGuide";
 import HistoryTable from "@/components/HistoryTable";
 import ClaimTable from "@/components/CraimTable";
 import Suspension from "@/components/Suspension";
+import OwnerBalance from "@/components/OwnerBalance";
 import isSaturdayEvening from "@/lib/isSaturdayEvening";
 
 // 使用したいフォントの設定
@@ -34,6 +34,7 @@ export default function Home() {
       >
         Raffle&#123;X&#125;
       </Typography>
+      <OwnerBalance />
       {isSaturdayEvening() && <Suspension />}
       {!isSaturdayEvening() && <ButtonJoin />}
       <AccordionGuide />

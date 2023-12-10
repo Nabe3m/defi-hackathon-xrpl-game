@@ -9,6 +9,7 @@ import ThemeRegistry from "@/components/ThemeRegistry/ThemeRegistry";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("http://localhost:3000"),
   title: "Raffle{X}",
   description: "Game apps to enjoy in XRPL",
   icons: {

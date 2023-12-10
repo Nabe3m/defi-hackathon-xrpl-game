@@ -1,14 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import {
-  Client,
-  Amount,
-  AccountObjectsResponse,
-  dropsToXrp,
-  xrpToDrops,
-  unixTimeToRippleTime,
-} from "xrpl";
+import { Client, Amount, AccountObjectsResponse, dropsToXrp } from "xrpl";
 import sdk from "@crossmarkio/sdk";
 import { useUser } from "../contexts/UserContext";
 import {
@@ -25,10 +18,6 @@ import {
 const ClaimTable = () => {
   const [checks, setChecks] = useState<AccountObjectsResponse | null>(null);
   const { user } = useUser();
-
-  useEffect(() => {
-    getCheckTransactions();
-  }, [user.isConnected]);
 
   const getCheckTransactions = async () => {
     if (user.address) {
@@ -77,41 +66,53 @@ const ClaimTable = () => {
     }
   };
 
+  useEffect(() => {
+    getCheckTransactions();
+  }, [user.isConnected, user.address]);
+
   return (
     <>
       <Container maxWidth="sm" className="p-5">
         <Typography variant="h6">Claim Checks</Typography>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Claimable Amount</TableCell>
-              <TableCell>Claim</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {checks?.result.account_objects.map((check, index) => {
-              if (
-                check.LedgerEntryType === "Check" &&
-                typeof check.SendMax === "string"
-              ) {
-                return (
-                  <TableRow key={index}>
-                    <TableCell>{dropsToXrp(check.SendMax)} XRP</TableCell>
-                    <TableCell>
-                      <Button
-                        variant="contained"
-                        onClick={() => handleClaim(check.index, check.SendMax)}
-                      >
-                        Claim
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                );
-              }
-              return null; // Checkオブジェクトでない、またはSendMaxが適切な形式でない場合は何も表示しない
-            })}
-          </TableBody>
-        </Table>
+
+        {checks?.result.account_objects &&
+        checks?.result.account_objects.length > 0 ? (
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Claimable Amount</TableCell>
+                <TableCell>Claim</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {checks?.result.account_objects.map((check, index) => {
+                if (
+                  check.LedgerEntryType === "Check" &&
+                  typeof check.SendMax === "string"
+                ) {
+                  return (
+                    <TableRow key={index}>
+                      <TableCell>{dropsToXrp(check.SendMax)} XRP</TableCell>
+                      <TableCell>
+                        <Button
+                          variant="contained"
+                          onClick={() =>
+                            handleClaim(check.index, check.SendMax)
+                          }
+                        >
+                          Claim
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  );
+                }
+                return null; // Checkオブジェクトでない、またはSendMaxが適切な形式でない場合は何も表示しない
+              })}
+            </TableBody>
+          </Table>
+        ) : (
+          <Typography className="pt-4">No data available.</Typography>
+        )}
       </Container>
     </>
   );
